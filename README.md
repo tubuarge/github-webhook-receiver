@@ -11,6 +11,3 @@ SECRET control will be verified inside
 change secret
 
 hmac check
-
-
-
