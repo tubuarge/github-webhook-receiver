@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const express = require("express");
+const childp = require('child_process')
 const app = express();
 const port = 6666;
 
@@ -20,7 +21,6 @@ function verify(req, res, next) {
   	if (!payload) {
     		return next('Request body empty')
   	}
-	//console.log(`paylod ${payload}`);
 	req.payload = JSON.parse(payload);
   	const sig = req.get(sigHeaderName) || ''
   	const hmac = crypto.createHmac('sha1', secret)
@@ -32,6 +32,19 @@ function verify(req, res, next) {
   	return next();
 }
 
+function deploy(res){
+        console.log('deploying')
+        childp.exec('cd /home/ubuntu && sh update.sh', function(err, stdout, stderr){
+                if (err) {
+                        console.error(err);
+                        return res.send(500);
+                }
+                console.log(stdout);
+                console.log(stderr);
+                res.send(200);
+        });
+}
+
 app.post("/", verify, function (req, res) {
 	if(req.body.payload == undefined || req.body == null){
 		return res.send(400);
@@ -41,21 +54,10 @@ app.post("/", verify, function (req, res) {
 	let sender = req.payload.sender;
     	let branch = req.payload.ref;
 	console.log(`Sender ${sender} at branch ${branch}`);
-	if(branch.indexOf('master') > -1){
-		deploy(res);
-	} 
+	deploy(res);
 })
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`)
 })
 
-function deploy(res){
-	childProcess.exec('cd /home/ubuntu && ./update.sh', function(err, stdout, stderr){
-        	if (err) {
-        		console.error(err);
-        		return res.send(500);
-        	}
-        	res.send(200);
-      	});
-}
