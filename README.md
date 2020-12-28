@@ -16,5 +16,3 @@ it will return 400 if there is not any payload
 returns 200 if body present
 
 it validates the hmac
-
-and returns 400 if not valid
