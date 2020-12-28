@@ -2,7 +2,7 @@ let express = require("express");
 let app = express();
 let port = 6666
 
-app.post("/webhooks/github", function (req, res) {
+app.post("/github", function (req, res) {
 	console.log('web hook received');
 	console.log(`Body: ${req.body}`);
 	let sender = req.body.sender;
