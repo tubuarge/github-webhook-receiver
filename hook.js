@@ -1,4 +1,5 @@
-let express = require("express");
+const express = require("express");
+const childProcess = require('child_process');
 let app = express();
 let port = 6666
 
@@ -21,6 +22,11 @@ app.post("/github", function (req, res) {
 		console.log('push not received from master branch');
 		return res.send(500);
 	} 
+})
+
+app.post("/echo", function (req, res) {
+	console.log('echo hook received');	
+	return echo(res);
 })
 
 app.listen(port, () => {
