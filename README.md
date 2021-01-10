@@ -1,11 +1,9 @@
-# webhook
+# Github Webhook Receiver
 
-run a script inside of your vm
+It allows you receive webhooks and run a bash script or command inside `deploy.sh`
 
-add webhook to github
 
-call /github
-
-SECRET control will be verified inside
-
-change secret
+* Go to your EC2, VM.
+* Checkout this project and run with `npm start`
+* change the `const secret = 'SECRET_CHANGE_ME';` inside hook.js
+* add webhook to your github project, set the secret
